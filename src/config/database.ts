@@ -8,7 +8,7 @@ dotenv.config();
 
 export class DatabaseConfig {
 
-    static _printSql = process.env.PRINT_SQL == "false";
+    static _printSql = false;
 
     private static config = {
         host:       process.env.PG_HOST,

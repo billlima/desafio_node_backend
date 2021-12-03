@@ -6,13 +6,13 @@ export class AuthDao extends GenericDao {
         super('usuario');
     }
 
-    auth(email: string): any {
+    auth(login: string): any {
         const sql = `
             SELECT *
             FROM usuario u
-            WHERE u.email = :email 
+            WHERE u.login = :login 
         `;
 
-        return this.findOne(sql, {email: email});
+        return this.findOne(sql, {login: login});
     }
 }

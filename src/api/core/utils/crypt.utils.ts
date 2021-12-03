@@ -11,8 +11,8 @@ export class CryptUtils {
         return bcrypt.hashSync(pass, salt);
     } 
 
-    static comparePass = (pass: string, encryptedPass: string) => {
-        return bcrypt.compareSync(pass.toString(), encryptedPass);
+    static comparePass = async (pass: string, encryptedPass: string) => {
+        return await this.hashString(pass.toString()) == encryptedPass;
     }
 
     static gerarTokenUsuario = (usuario: Usuario) => {

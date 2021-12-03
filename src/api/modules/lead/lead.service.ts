@@ -1,3 +1,4 @@
+import { ArquivoService } from "../../core/arquivo/arquivo.service";
 import { Controller } from "../../core/controller";
 import { ValidacaoUtils } from "../../core/utils/validacao.utils";
 import { Lead } from "../../models/lead";
@@ -6,6 +7,7 @@ import { LeadDao } from "./lead.dao";
 export class LeadService {
 
     private dao = new LeadDao();
+    private arquivoService = new ArquivoService();
 
     buscarTodos = async (req: any, res: any) => {
         const lista = await this.dao.buscarTodos();
@@ -42,13 +44,13 @@ export class LeadService {
 
         const id = await this.dao.inserir(object, null);
 
-        Controller.gerarRetorno(res, true, {id: id});
+        Controller.gerarRetorno(res, true, {id: id}, Controller.getMessage("succ_save"));
     }
 
     atualizar = async (req: any, res: any) => {
         const body: Lead = req.body;
         
-        const msg = await this.validarDadosInsercaoAtualizacao(body);
+        const msg = await this.validarDadosInsercaoAtualizacao(body, req.params.id);
         if (msg != null) {
             return Controller.gerarRetornoErro(res, msg);
         }
@@ -84,6 +86,12 @@ export class LeadService {
         if (object == null) {
             return Controller.gerarRetornoErro(res, Controller.getMessage('err_not_found'));
         }
+
+        const arquivo = await this.arquivoService.buscarPorId(req.params.idFoto);
+        if (arquivo == null) {
+            return Controller.gerarRetornoErro(res, 
+                Controller.getMessage('err_not_found_generic', ['Arquivo']));
+        }
         
         object.idFoto = req.params.idFoto;
         
@@ -96,7 +104,7 @@ export class LeadService {
     // ################
     // validaçõeses
 
-    validarDadosInsercaoAtualizacao = async (object: Lead): Promise<string | null> => {
+    validarDadosInsercaoAtualizacao = async (object: Lead, id: number | null = null): Promise<string | null> => {
         if (!object.idPlanoInternet || !object.nome || !object.endereco ||
             !object.cpf || !object.cep) {
             return Controller.getMessage('err_required_fields');
@@ -110,7 +118,7 @@ export class LeadService {
             return Controller.getMessage('err_invalid', ['Cpf']);
         }
 
-        if (!await this.dao.isUnique('cpf', object.cpf, object.idLead)) {
+        if (!await this.dao.isUnique('cpf', object.cpf, id)) {
             return Controller.getMessage('err_unique', ['Cpf']);
         } 
 

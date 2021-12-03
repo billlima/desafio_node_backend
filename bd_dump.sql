@@ -67,7 +67,8 @@ CREATE TABLE public.lead (
     endereco text NOT NULL,
     cep text NOT NULL,
     cpf text NOT NULL,
-    id_foto integer
+    id_foto integer,
+    id_plano_internet integer NOT NULL
 );
 
 
@@ -93,6 +94,40 @@ ALTER TABLE public.lead_id_lead_seq OWNER TO postgres;
 --
 
 ALTER SEQUENCE public.lead_id_lead_seq OWNED BY public.lead.id_lead;
+
+
+--
+-- Name: plano_internet; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.plano_internet (
+    id_plano_internet integer NOT NULL,
+    nome text NOT NULL
+);
+
+
+ALTER TABLE public.plano_internet OWNER TO postgres;
+
+--
+-- Name: plano_internet_id_plano_internet_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.plano_internet_id_plano_internet_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.plano_internet_id_plano_internet_seq OWNER TO postgres;
+
+--
+-- Name: plano_internet_id_plano_internet_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.plano_internet_id_plano_internet_seq OWNED BY public.plano_internet.id_plano_internet;
 
 
 --
@@ -146,6 +181,13 @@ ALTER TABLE ONLY public.lead ALTER COLUMN id_lead SET DEFAULT nextval('public.le
 
 
 --
+-- Name: plano_internet id_plano_internet; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.plano_internet ALTER COLUMN id_plano_internet SET DEFAULT nextval('public.plano_internet_id_plano_internet_seq'::regclass);
+
+
+--
 -- Name: usuario id_usuario; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -164,7 +206,19 @@ COPY public.arquivo (id_arquivo, nome, mimetype, tamanho, data_hora_insercao) FR
 -- Data for Name: lead; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.lead (id_lead, nome, endereco, cep, cpf, id_foto) FROM stdin;
+COPY public.lead (id_lead, nome, endereco, cep, cpf, id_foto, id_plano_internet) FROM stdin;
+1	Cliente2 da silva	Endereço22	96815200	09054331062	\N	3
+\.
+
+
+--
+-- Data for Name: plano_internet; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.plano_internet (id_plano_internet, nome) FROM stdin;
+1	Básico
+2	Regular
+3	Avançado
 \.
 
 
@@ -188,7 +242,14 @@ SELECT pg_catalog.setval('public.arquivo_id_arquivo_seq', 1, false);
 -- Name: lead_id_lead_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.lead_id_lead_seq', 1, false);
+SELECT pg_catalog.setval('public.lead_id_lead_seq', 2, true);
+
+
+--
+-- Name: plano_internet_id_plano_internet_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.plano_internet_id_plano_internet_seq', 3, true);
 
 
 --
@@ -223,6 +284,14 @@ ALTER TABLE ONLY public.lead
 
 
 --
+-- Name: plano_internet plano_internet_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.plano_internet
+    ADD CONSTRAINT plano_internet_pkey PRIMARY KEY (id_plano_internet);
+
+
+--
 -- Name: usuario usuario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -236,6 +305,14 @@ ALTER TABLE ONLY public.usuario
 
 ALTER TABLE ONLY public.lead
     ADD CONSTRAINT lead_id_foto_fkey FOREIGN KEY (id_foto) REFERENCES public.arquivo(id_arquivo);
+
+
+--
+-- Name: lead lead_id_plano_internet_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.lead
+    ADD CONSTRAINT lead_id_plano_internet_fkey FOREIGN KEY (id_plano_internet) REFERENCES public.plano_internet(id_plano_internet);
 
 
 --

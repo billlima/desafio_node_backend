@@ -14,7 +14,7 @@ class GenericDao {
     combo = (columnDescription: any = 'descricao') => {
         const sql = `
         SELECT 
-        id_${this.tabela} AS id, id_${this.tabela}, ${columnDescription} as descricao
+        id_${this.tabela} AS id, ${columnDescription} as descricao
         FROM ${this.tabela}
         ORDER BY ${columnDescription}
         `;

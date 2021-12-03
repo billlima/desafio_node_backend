@@ -8,7 +8,7 @@ export class EnderecoService {
         const cep = req.params.cep;
         
         if(!ValidacaoUtils.validarCep(cep)) {
-            return Controller.gerarRetornoErro(res, Controller.getMessage('err_invalid', ['cep']));    
+            return Controller.gerarRetornoErro(res, Controller.getMessage('err_invalid', ['Cep']));    
         }
 
         try {
@@ -22,9 +22,11 @@ export class EnderecoService {
     buscarCepApi = (cep: string) => {
         let url = `https://viacep.com.br/ws/${cep}/json/`;
 
-        return axios.get(url).catch((err: any) => {
-            console.log(err);
-            throw('err');
-        });
+        return axios.get(url)
+            .then((response: any) => response.data)
+            .catch((err: any) => {
+                console.log(err);
+                throw('err');
+            });
     }
 }

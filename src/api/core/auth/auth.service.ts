@@ -9,12 +9,13 @@ export class AuthService {
 
     auth = () => async (req: any, res: any, _next: any) => {
         try {
-            const usuario: Usuario = await this._dao.auth(req.body.email); 
+            let usuario: Usuario = await this._dao.auth(req.body.login); 
             
             if (usuario != null) {
-                const hashSenha = CryptUtils.comparePass(req.body.senha, usuario.senha!);
+                const hashSenha = await CryptUtils.comparePass(req.body.senha, usuario.senha!);
                 
                 if (hashSenha) {
+                    usuario.senha = null;
                     return Controller.gerarRetorno(res, true, 
                         {token: CryptUtils.gerarTokenUsuario(usuario), usuario: usuario});
                 } 

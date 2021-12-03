@@ -16,7 +16,7 @@ export class LeadDao extends GenericDao {
         return this.insertWithReturnId(
             `INSERT INTO lead 
                 (id_plano_internet, nome, endereco, cep, cpf) VALUES
-                (idPlanoInternet, nome, endereco, cep, cpf)`, 
+                (:idPlanoInternet, :nome, :endereco, :cep, :cpf)`, 
             lead, 
             transaction
         );
