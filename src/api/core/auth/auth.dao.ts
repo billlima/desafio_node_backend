@@ -1,4 +1,4 @@
-import { GenericDao } from "./generic/generic.dao";
+import { GenericDao } from "../utils/generic/generic.dao";
 
 export class AuthDao extends GenericDao {
     

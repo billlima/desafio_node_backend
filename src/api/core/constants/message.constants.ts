@@ -5,7 +5,7 @@ const msg: Map<string, string> = new Map([
     
     ['err', 'Erro ao realizar a operação'],
     ['err_invalid_request', 'Requisição inválida'],
-    ['err_required_fields', 'Excluído com sucesso'],
+    ['err_required_fields', 'Preencha todos os campos obrigatórios'],
     ['err_wrong_user_pass', 'Usuário ou senha incorretos'],
     ['err_not_found', 'Registro não encontrado'],
     ['err_invalid', '{0} inválido(a)'],

@@ -1,4 +1,4 @@
-import { GenericDao } from "../../core/auth/generic/generic.dao";
+import { GenericDao } from "../../core/utils/generic/generic.dao";
 import { Lead } from "../../models/lead";
 import { QueryOptions } from "../../models/utils/query-options";
 

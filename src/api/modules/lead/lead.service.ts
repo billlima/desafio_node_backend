@@ -25,7 +25,10 @@ export class LeadService {
     inserir = async (req: any, res: any) => {
         const body: Lead = req.body;
         
-        if (!this.validarDadosInsercaoAtualizacao(body, res)) return;
+        const msg = await this.validarDadosInsercaoAtualizacao(body);
+        if (msg != null) {
+            return Controller.gerarRetornoErro(res, msg);
+        }
         
         const object = new Lead(
             null,
@@ -45,7 +48,10 @@ export class LeadService {
     atualizar = async (req: any, res: any) => {
         const body: Lead = req.body;
         
-        if (!this.validarDadosInsercaoAtualizacao(body, res)) return;
+        const msg = await this.validarDadosInsercaoAtualizacao(body);
+        if (msg != null) {
+            return Controller.gerarRetornoErro(res, msg);
+        }
         
         const object: Lead = await this.dao.findById(req.params.id);
         if (object == null) {
@@ -87,27 +93,27 @@ export class LeadService {
     }
 
 
-    // ##################################################################################################################
-    // utils
+    // ################
+    // validaçõeses
 
-    private validarDadosInsercaoAtualizacao = async (object: Lead, res: any) => {
+    validarDadosInsercaoAtualizacao = async (object: Lead): Promise<string | null> => {
         if (!object.idPlanoInternet || !object.nome || !object.endereco ||
             !object.cpf || !object.cep) {
-            return Controller.gerarRetornoErro(res, Controller.getMessage('err_required_fields'));
+            return Controller.getMessage('err_required_fields');
         }
         
         if (!ValidacaoUtils.validarCep(object.cep)) {
-            return Controller.gerarRetornoErro(res, Controller.getMessage('err_invalid', ['cep']));
+            return Controller.getMessage('err_invalid', ['Cep']);
         }
 
-        if (!ValidacaoUtils.validarCep(object.cpf)) {
-            return Controller.gerarRetornoErro(res, Controller.getMessage('err_invalid', ['cpf']));
+        if (!ValidacaoUtils.validarCpfCnpj(object.cpf)) {
+            return Controller.getMessage('err_invalid', ['Cpf']);
         }
 
         if (!await this.dao.isUnique('cpf', object.cpf, object.idLead)) {
-            return Controller.gerarRetornoErro(res, Controller.getMessage('err_unique', ['cpf']));
+            return Controller.getMessage('err_unique', ['Cpf']);
         } 
 
-        return true;
+        return null;
     }
 }

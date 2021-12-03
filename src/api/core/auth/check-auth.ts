@@ -8,11 +8,11 @@ dotenv.config();
 
 export class CheckAuth {
 
-    private static AUTH_FAILED = 'Auth failed';
+    static AUTH_FAILED = 'Auth failed';
 
     static logado = async(_req: any, _res: any, _next: any) => {
         try {
-            const decoded = await CheckAuth.verificarToken(_req);
+            const decoded = CheckAuth.verificarToken(_req);
             _req.userData = await CheckAuth.getUsuario(decoded.idUsuario);
         } catch(e: any) {
             return CheckAuth.retornarNaoAutorizado(_res, e.toString());
@@ -20,19 +20,20 @@ export class CheckAuth {
         _next();
     }
 
-    private static verificarToken = async (_req: any) => {
+    static verificarToken = (_req: any) => {
         if (ValidacaoUtils.isEmpty(_req.headers.authorization)) {
             throw CheckAuth.AUTH_FAILED;
         }
 
         const token = _req.headers.authorization.split(" ")[1];
-        console.log(`\ntoken: ${token}\n--`);
-                    
-        const decoded = CryptUtils.validarTokenUsuario(token, <string> process.env.JWT_SECRET_KEY);
+        let decoded;
 
-        if (!decoded || !decoded.date) {
+        try {
+            decoded = CryptUtils.validarTokenUsuario(token, <string> process.env.JWT_SECRET_KEY);
+        } catch (e: any) {
             throw CheckAuth.AUTH_FAILED;
         }
+        
         return decoded
     }
 

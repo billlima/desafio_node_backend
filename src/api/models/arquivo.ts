@@ -1,10 +1,9 @@
 export class Arquivo {
     constructor(
         public idArquivo: number | null,
-        public idUsuario: number | null,
-        public originalName: string | null,
+        public nome: string | null,
         public mimetype: string | null,
-        public size: number,  
+        public tamanho: number,  
         public dataHoraInsercao: Date | string
     ){}
 }

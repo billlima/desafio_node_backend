@@ -23,9 +23,9 @@ export class ArquivoService {
         }
 
         const arquivo = <Arquivo>{};
-        arquivo.originalName = file.originalname,
+        arquivo.nome = file.originalname,
         arquivo.mimetype = file.mimetype,
-        arquivo.size = file.size,
+        arquivo.tamanho = file.size,
         arquivo.dataHoraInsercao = DateUtils.toFormatDB();
 
         const idArquivo: number = await this.dao.inserir(arquivo);

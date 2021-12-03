@@ -1,5 +1,5 @@
 import { Arquivo } from "../../models/arquivo";
-import { GenericDao } from "../auth/generic/generic.dao";
+import { GenericDao } from "../utils/generic/generic.dao";
 
 export class ArquivoDao extends GenericDao {
 
@@ -10,8 +10,8 @@ export class ArquivoDao extends GenericDao {
     inserir = (arquivo: Arquivo, transaction: any = null) => {
         const sql = `
             INSERT INTO public.arquivo
-            (data_hora_insercao, size, mimetype, original_name) VALUES
-            (:dataHoraInsercao, :size, :mimetype, :originalName)`
+            (data_hora_insercao, tamanho, mimetype, nome) VALUES
+            (:dataHoraInsercao, :tamanho, :mimetype, :nome)`
         return this.insertWithReturnId(sql, arquivo, transaction);
     }
 

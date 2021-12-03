@@ -15,6 +15,7 @@
   "dependencies": {
     "@types/pg": "^7.14.9",
     "@types/yesql": "^4.1.0",
+    "axios": "^0.24.0",
     "bcrypt": "^5.0.0",
     "better-recase": "^1.0.0",
     "body-parser": "^1.19.0",
