@@ -1,5 +1,7 @@
 # Desafio Node BackEnd
 
+Foram escritos alguns testes unitários.
+
 Configuraçoes do banco no arquivo `.env`<br>
 Fazer restore do banco pelo arquivo `bd_dump.sql`
 
