@@ -1,6 +1,6 @@
 # Desafio Node BackEnd
 
-Install<br>
+Instalar Dependências<br>
 `npm install`
 
 Executar<br>
